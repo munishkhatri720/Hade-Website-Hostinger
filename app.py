@@ -1,8 +1,14 @@
+import os
 from fastapi import FastAPI , Query , Response ,  status
 from fastapi.responses import HTMLResponse , RedirectResponse
 from fastapi.requests import Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+
+HADE_INVITE_URL = os.getenv('HADE_INVITE_URL')
+HADE_CANARY_INVITE_URL = os.getenv('HADE_CANARY_INVITE_URL')
+HADE_SUPPORT_URL = os.getenv('HADE_SUPPORT_URL')
+
 
 app = FastAPI(debug=True)
 app.mount('/static' , StaticFiles(directory='static') , name="static")
@@ -18,11 +24,11 @@ async def index(request : Request):
 
 @app.get('/invite/' , response_class=RedirectResponse)
 async def invite():
-    return RedirectResponse(url="https://google.com" , status_code=307)
+    return RedirectResponse(url=HADE_INVITE_URL , status_code=307)
 
 @app.get('/support/' , response_class=RedirectResponse)
 async def support():
-    return RedirectResponse(url="https://google.com", status_code=307)
+    return RedirectResponse(url=HADE_SUPPORT_URL, status_code=307)
 
 
 if __name__ == "__main__":
