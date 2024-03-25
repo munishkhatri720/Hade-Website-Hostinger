@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 HADE_INVITE_URL = os.getenv('HADE_INVITE_URL')
 HADE_CANARY_INVITE_URL = os.getenv('HADE_CANARY_INVITE_URL')
 HADE_SUPPORT_URL = os.getenv('HADE_SUPPORT_URL')
+HADE_VOTE_URL = os.getenv('HADE_VOTE_URL')
 
 
 app = FastAPI(debug=True)
@@ -30,6 +31,14 @@ async def invite():
 async def support():
     return RedirectResponse(url=HADE_SUPPORT_URL, status_code=307)
 
+@app.get('/vote/' , response_class=RedirectResponse)
+async def vote():
+    return RedirectResponse(url=HADE_VOTE_URL , status_code=307)
+
+@app.get('/documentation/' , response_class=HTMLResponse)
+async def documentation(request : Request):
+    context = {'request':request}
+    return templates.TemplateResponse("docs/index.html",context=context)
 
 if __name__ == "__main__":
     import uvicorn
